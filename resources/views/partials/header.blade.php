@@ -6,7 +6,7 @@
                 <div class="header-contact">
                     <span class="me-4">
                         <i class="fas fa-phone me-2"></i>
-                        <a href="tel:{{ config('site.contact.phone') }}" class="text-white text-decoration-none">{{ config('site.contact.phone') }}</a>
+                        <a href="tel:{{ config('site.contact.phone') }}" class="text-white text-decoration-none">{{ config('site.contact.phone_display') }}</a>
                     </span>
                     <span>
                         <i class="fas fa-envelope me-2"></i>

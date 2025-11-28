@@ -16,7 +16,6 @@
     @stack('styles')
 </head>
 <body>
-    @include('partials.header')
     @include('partials.navbar')
     
     <main>

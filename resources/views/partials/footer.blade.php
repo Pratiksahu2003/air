@@ -41,7 +41,7 @@
                 <ul class="list-unstyled">
                     <li class="mb-2">
                         <i class="fas fa-phone me-2"></i>
-                        <a href="tel:{{ config('site.contact.phone') }}" class="text-white-50">{{ config('site.contact.phone') }}</a>
+                        <a href="tel:{{ config('site.contact.phone') }}" class="text-white-50">{{ config('site.contact.phone_display') }}</a>
                     </li>
                     <li class="mb-2">
                         <i class="fas fa-envelope me-2"></i>

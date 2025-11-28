@@ -1,12 +1,8 @@
 <!-- Main Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-            <img src="{{ asset(config('site.logo')) }}" alt="{{ config('site.name') }}" class="logo-img me-2">
-            <div class="logo-text">
-                <span class="fw-bold text-primary d-block">{{ config('site.name') }}</span>
-                <small class="text-muted d-block small d-none d-md-block">{{ config('site.tagline') }}</small>
-            </div>
+        <a class="navbar-brand" href="{{ route('home') }}">
+            <img src="{{ asset(config('site.logo')) }}" alt="{{ config('site.name') }}" class="logo-img">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

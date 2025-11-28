@@ -41,10 +41,6 @@ const departureDateInput = document.getElementById('departureDate');
 const returnDateInput = document.getElementById('returnDate');
 const returnDateContainer = document.getElementById('returnDateContainer');
 const flightSearchForm = document.getElementById('flightSearchForm');
-const tabButtons = document.querySelectorAll('.tab-btn');
-const passengersInput = document.getElementById('passengers');
-const increasePassengersBtn = document.getElementById('increasePassengers');
-const decreasePassengersBtn = document.getElementById('decreasePassengers');
 const scrollTopBtn = document.getElementById('scrollTop');
 
 // Set minimum date to today
@@ -54,14 +50,25 @@ if (returnDateInput) {
     returnDateInput.min = today;
 }
 
-// Tab Switching
-tabButtons.forEach(btn => {
+// Main Tabs Switching (FLIGHTS / GROUP BOOKING)
+const mainTabs = document.querySelectorAll('.main-tab');
+mainTabs.forEach(btn => {
     btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('active'));
+        mainTabs.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
         const tabType = btn.getAttribute('data-tab');
-        if (tabType === 'round-trip') {
+        if (tabType === 'group-booking') {
+            window.location.href = '/group-booking';
+        }
+    });
+});
+
+// Trip Type Radio Buttons
+const tripTypeRadios = document.querySelectorAll('input[name="tripType"]');
+tripTypeRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+        if (radio.value === 'roundtrip') {
             returnDateContainer.style.display = 'block';
             returnDateInput.required = true;
         } else {
@@ -129,55 +136,110 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Passenger Counter
-increasePassengersBtn.addEventListener('click', () => {
-    const current = parseInt(passengersInput.value);
-    if (current < 9) {
-        passengersInput.value = current + 1;
-    }
+// Passenger Counters (Adults, Children, Infants)
+const passengerButtons = document.querySelectorAll('.passenger-btn');
+passengerButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const field = btn.getAttribute('data-field');
+        const action = btn.getAttribute('data-action');
+        const input = document.getElementById(field);
+        const current = parseInt(input.value);
+        const max = field === 'adults' ? 50 : 50;
+        const min = field === 'adults' ? 1 : 0;
+        
+        if (action === 'increase' && current < max) {
+            input.value = current + 1;
+        } else if (action === 'decrease' && current > min) {
+            input.value = current - 1;
+        }
+        
+        // Update button states
+        updatePassengerButtons(field);
+    });
 });
 
-decreasePassengersBtn.addEventListener('click', () => {
-    const current = parseInt(passengersInput.value);
-    if (current > 1) {
-        passengersInput.value = current - 1;
-    }
+function updatePassengerButtons(field) {
+    const input = document.getElementById(field);
+    const value = parseInt(input.value);
+    const min = field === 'adults' ? 1 : 0;
+    const max = 50;
+    
+    const decreaseBtn = document.querySelector(`.passenger-btn[data-field="${field}"][data-action="decrease"]`);
+    const increaseBtn = document.querySelector(`.passenger-btn[data-field="${field}"][data-action="increase"]`);
+    
+    if (decreaseBtn) decreaseBtn.disabled = value <= min;
+    if (increaseBtn) increaseBtn.disabled = value >= max;
+}
+
+// Initialize button states
+['adults', 'children', 'infants'].forEach(field => {
+    updatePassengerButtons(field);
 });
 
-// Form Submission
-flightSearchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const fromCity = fromCityInput.value;
-    const toCity = toCityInput.value;
-    const departureDate = departureDateInput.value;
-    const returnDate = returnDateInput.value;
-    const passengers = passengersInput.value;
-    const tripType = document.querySelector('.tab-btn.active').getAttribute('data-tab');
-    
-    if (!fromCity || !toCity || !departureDate) {
-        alert('Please fill in all required fields');
-        return;
-    }
-    
-    if (tripType === 'round-trip' && !returnDate) {
-        alert('Please select return date');
-        return;
-    }
-    
-    // Show loading state
-    const submitBtn = flightSearchForm.querySelector('.search-btn');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="loading-spinner"></span> Searching...';
-    submitBtn.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-        alert(`Flight search initiated!\n\nFrom: ${fromCity}\nTo: ${toCity}\nDeparture: ${departureDate}\n${tripType === 'round-trip' ? `Return: ${returnDate}\n` : ''}Passengers: ${passengers}\n\nThis is a demo. In a real application, this would redirect to flight results.`);
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }, 1500);
-});
+// WhatsApp Button
+const whatsappBtn = document.getElementById('whatsappBtn');
+if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', () => {
+        const fromCity = fromCityInput.value;
+        const toCity = toCityInput.value;
+        const departureDate = departureDateInput.value;
+        const returnDate = returnDateInput.value;
+        const adults = document.getElementById('adults').value;
+        const children = document.getElementById('children').value;
+        const infants = document.getElementById('infants').value;
+        const contactNumber = document.getElementById('contactNumber').value;
+        const emailAddress = document.getElementById('emailAddress').value;
+        const tripType = document.querySelector('input[name="tripType"]:checked').value;
+        
+        if (!fromCity || !toCity || !departureDate || !contactNumber || !emailAddress) {
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        if (tripType === 'roundtrip' && !returnDate) {
+            alert('Please select return date');
+            return;
+        }
+        
+        const message = `Flight Booking Request:\n\nFrom: ${fromCity}\nTo: ${toCity}\nDeparture: ${departureDate}\n${tripType === 'roundtrip' ? `Return: ${returnDate}\n` : ''}Adults: ${adults}\nChildren: ${children}\nInfants: ${infants}\nContact: ${contactNumber}\nEmail: ${emailAddress}`;
+        const phoneNumber = '917838848340'; // Replace with your WhatsApp business number
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    });
+}
+
+// Gmail Button
+const gmailBtn = document.getElementById('gmailBtn');
+if (gmailBtn) {
+    gmailBtn.addEventListener('click', () => {
+        const fromCity = fromCityInput.value;
+        const toCity = toCityInput.value;
+        const departureDate = departureDateInput.value;
+        const returnDate = returnDateInput.value;
+        const adults = document.getElementById('adults').value;
+        const children = document.getElementById('children').value;
+        const infants = document.getElementById('infants').value;
+        const contactNumber = document.getElementById('contactNumber').value;
+        const emailAddress = document.getElementById('emailAddress').value;
+        const tripType = document.querySelector('input[name="tripType"]:checked').value;
+        
+        if (!fromCity || !toCity || !departureDate || !contactNumber || !emailAddress) {
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        if (tripType === 'roundtrip' && !returnDate) {
+            alert('Please select return date');
+            return;
+        }
+        
+        const subject = 'Flight Booking Request';
+        const body = `Flight Booking Request:\n\nFrom: ${fromCity}\nTo: ${toCity}\nDeparture: ${departureDate}\n${tripType === 'roundtrip' ? `Return: ${returnDate}\n` : ''}Adults: ${adults}\nChildren: ${children}\nInfants: ${infants}\nContact: ${contactNumber}\nEmail: ${emailAddress}`;
+        const email = 'Groups@AirRj.com';
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(gmailUrl, '_blank');
+    });
+}
 
 // Set return date minimum to departure date
 departureDateInput.addEventListener('change', () => {

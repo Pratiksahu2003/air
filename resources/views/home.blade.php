@@ -5,67 +5,22 @@
 @section('content')
     <!-- Hero Section with Flight Search -->
     <section class="hero-section">
-        <div class="hero-overlay"></div>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="hero-content text-center text-white mb-5">
-                        <h1 class="display-4 fw-bold mb-4">Plan Group Tours to Dream Locations in Just a Click!</h1>
-                        <p class="lead">Book Group Flights with Best Deals and Lowest Group Fares</p>
+                <div class="col-12">
+                    <div class="hero-content text-center text-white mb-4">
+                        <h1 class="display-5 fw-bold mb-3">Plan Group Tours to Dream Locations in Just a Click!</h1>
+                        <p class="lead mb-0">Book Group Flights with Best Deals and Lowest Group Fares</p>
                     </div>
                     
-                    <!-- Flight Search Form -->
-                    <div class="flight-search-card">
-                        <div class="search-tabs">
-                            <button class="tab-btn active" data-tab="one-way">
-                                <i class="fas fa-arrow-right me-2"></i>One way
-                            </button>
-                            <button class="tab-btn" data-tab="round-trip">
-                                <i class="fas fa-exchange-alt me-2"></i>Round trip
-                            </button>
-                        </div>
-                        
-                        <form id="flightSearchForm" class="search-form">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="form-label">FROM</label>
-                                    <div class="input-group position-relative">
-                                        <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                        <input type="text" class="form-control" id="fromCity" placeholder="Delhi, India (DEL)" autocomplete="off">
-                                        <div class="airport-suggestions" id="fromSuggestions"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">TO</label>
-                                    <div class="input-group position-relative">
-                                        <span class="input-group-text"><i class="fas fa-plane-arrival"></i></span>
-                                        <input type="text" class="form-control" id="toCity" placeholder="Mumbai, India (BOM)" autocomplete="off">
-                                        <div class="airport-suggestions" id="toSuggestions"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">DEPARTURE</label>
-                                    <input type="date" class="form-control" id="departureDate" required>
-                                </div>
-                                <div class="col-md-2" id="returnDateContainer" style="display: none;">
-                                    <label class="form-label">RETURN</label>
-                                    <input type="date" class="form-control" id="returnDate">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">PASSENGERS</label>
-                                    <div class="input-group">
-                                        <button type="button" class="btn btn-outline-secondary" id="decreasePassengers">-</button>
-                                        <input type="number" class="form-control text-center" id="passengers" value="1" min="1" max="50" readonly>
-                                        <button type="button" class="btn btn-outline-secondary" id="increasePassengers">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100 search-btn">
-                                        <i class="fas fa-search me-2"></i>Search Group Flights
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                    <!-- Flight Search Form Component -->
+                    <div class="search-form-wrapper">
+                        @include('components.flight-search-form')
+                    </div>
+                    
+                    <!-- Group Booking Component -->
+                    <div class="mt-4">
+                        @include('components.group-booking-card')
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Page Header -->
-    <section class="page-header bg-primary text-white py-5">
+    <section class="page-header text-white py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">

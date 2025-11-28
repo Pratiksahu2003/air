@@ -19,9 +19,10 @@ return [
     'description' => 'Your trusted partner for group flight bookings. We offer the best deals on domestic and international group travel with dedicated support and lowest airfares.',
     
     'contact' => [
-        'phone' => '+91-123-456-7890',
-        'email' => 'info@airrj.com',
-        'address' => 'India',
+        'phone' => '+917838848340', // For tel: links (no spaces)
+        'phone_display' => '+91 78388 48340', // For display (with spaces)
+        'email' => 'Groups@AirRj.com',
+        'address' => '4th Floor. 96A, BLOCK-B, Sector 13, Dwarka, New Delhi, Delhi, 110078',
         'support_hours' => '24/7 Customer Support',
     ],
 
