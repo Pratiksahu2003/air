@@ -67,17 +67,32 @@
                         <span>Flight Enquiries</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin.posts.index') }}" class="{{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                <li class="has-submenu {{ request()->routeIs('admin.posts.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.tags.*') ? 'active' : '' }}">
+                    <a href="javascript:void(0)" class="submenu-toggle">
                         <i class="fas fa-blog"></i>
-                        <span>Blog Posts</span>
+                        <span>Blog</span>
+                        <i class="fas fa-chevron-down submenu-arrow"></i>
                     </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                        <i class="fas fa-folder"></i>
-                        <span>Categories</span>
-                    </a>
+                    <ul class="submenu {{ request()->routeIs('admin.posts.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.tags.*') ? 'show' : '' }}">
+                        <li>
+                            <a href="{{ route('admin.posts.index') }}" class="{{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Posts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                                <i class="fas fa-folder"></i>
+                                <span>Categories</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
+                                <i class="fas fa-tags"></i>
+                                <span>Tags</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @if(Auth::user()->isAdmin())
                 <li>

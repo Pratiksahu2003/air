@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\GroupBookingController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,5 +78,12 @@ Route::prefix('admin')->name('admin.api.')->middleware(['web', 'admin'])->group(
     Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    
+    // Tag Management API Routes
+    Route::get('/tags', [TagController::class, 'getTags'])->name('tags.index');
+    Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+    Route::get('/tags/{id}', [TagController::class, 'show'])->name('tags.show');
+    Route::put('/tags/{id}', [TagController::class, 'update'])->name('tags.update');
+    Route::delete('/tags/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 

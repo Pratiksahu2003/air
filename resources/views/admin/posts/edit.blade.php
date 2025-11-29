@@ -90,10 +90,13 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header bg-light">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">Tags</h6>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="openAddTagModal()">
+                                <i class="fas fa-plus me-1"></i>Add New Tag
+                            </button>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" id="tags-container">
                             @foreach($tags as $tag)
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->id }}" id="tag_{{ $tag->id }}"
@@ -122,6 +125,34 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Add Tag Modal -->
+<div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTagModalLabel">Add New Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addTagForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="new_tag_name" class="form-label">Tag Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="new_tag_name" name="name" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="addTagSubmitBtn">
+                        <span class="spinner-border spinner-border-sm d-none" id="addTagSpinner" role="status"></span>
+                        Add Tag
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
@@ -181,6 +212,88 @@ document.getElementById('featured_image').addEventListener('change', function(e)
         reader.readAsDataURL(file);
     }
 });
+
+// Add Tag Modal
+let addTagModal;
+document.addEventListener('DOMContentLoaded', function() {
+    addTagModal = new bootstrap.Modal(document.getElementById('addTagModal'));
+    
+    document.getElementById('addTagForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('addTagSubmitBtn');
+        const spinner = document.getElementById('addTagSpinner');
+        const tagName = document.getElementById('new_tag_name').value.trim();
+        
+        if (!tagName) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter a tag name',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        spinner.classList.remove('d-none');
+        
+        axios.post('{{ route('admin.api.tags.store') }}', { name: tagName })
+            .then(function(response) {
+                const newTag = response.data.data;
+                
+                // Add new tag to the tags container
+                const tagsContainer = document.getElementById('tags-container');
+                const newTagHtml = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="tags[]" value="${newTag.id}" id="tag_${newTag.id}" checked>
+                        <label class="form-check-label" for="tag_${newTag.id}">${newTag.name}</label>
+                    </div>
+                `;
+                tagsContainer.insertAdjacentHTML('beforeend', newTagHtml);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Tag created and added to post',
+                    confirmButtonColor: '#0d6efd',
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+                
+                addTagModal.hide();
+                document.getElementById('addTagForm').reset();
+            })
+            .catch(function(error) {
+                if (error.response && error.response.status === 422) {
+                    const errors = error.response.data.errors;
+                    let errorMessage = Object.values(errors).flat().join('<br>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: errorMessage,
+                        confirmButtonColor: '#0d6efd'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.response?.data?.message || 'An error occurred. Please try again.',
+                        confirmButtonColor: '#0d6efd'
+                    });
+                }
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+            });
+    });
+});
+
+function openAddTagModal() {
+    document.getElementById('addTagForm').reset();
+    addTagModal.show();
+}
 
 // Form submission
 document.getElementById('postForm').addEventListener('submit', function(e) {

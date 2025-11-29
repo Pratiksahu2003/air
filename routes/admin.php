@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\GroupBookingController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
         
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        
+        Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
     });
 });
 
