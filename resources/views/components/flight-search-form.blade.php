@@ -47,7 +47,7 @@
                     <label class="form-label"><i class="fas fa-calendar-alt me-1"></i>DEPARTURE</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                        <input type="date" class="form-control" id="departureDate" required>
+                        <input type="text" class="form-control datepicker" id="departureDate" placeholder="Select Departure Date" required readonly>
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
                     <label class="form-label"><i class="fas fa-calendar-check me-1"></i>RETURN</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                        <input type="date" class="form-control" id="returnDate" placeholder="Select Return Date">
+                        <input type="text" class="form-control datepicker" id="returnDate" placeholder="Select Return Date" readonly>
                     </div>
                 </div>
             </div>
@@ -121,15 +121,15 @@
         <div class="form-actions">
             <div class="row g-3">
                 <div class="col-lg-3 col-md-4 col-sm-6">
+                    <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+                        <i class="fab fa-google me-2"></i>
+                        <span>Send via Gmail</span>
+                    </button>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <button type="button" class="btn btn-whatsapp w-100" id="whatsappBtn">
                         <i class="fab fa-whatsapp me-2"></i>
                         <span>Send via WhatsApp</span>
-                    </button>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <button type="button" class="btn btn-gmail w-100" id="gmailBtn">
-                        <i class="fab fa-google me-2"></i>
-                        <span>Send via Gmail</span>
                     </button>
                 </div>
             </div>

@@ -3,3 +3,107 @@
 
 /* You can import additional styles here if needed */
 
+/* Flatpickr Datepicker Custom Styles */
+.flatpickr-calendar {
+    font-family: inherit;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.flatpickr-months {
+    background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+    border-radius: 12px 12px 0 0;
+    padding: 10px;
+}
+
+.flatpickr-month {
+    color: white;
+}
+
+.flatpickr-current-month {
+    color: white;
+    font-weight: 600;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+    color: white;
+    fill: white;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+}
+
+.flatpickr-weekdays {
+    background: #f8f9fa;
+    padding: 8px 0;
+}
+
+.flatpickr-weekday {
+    color: #495057;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.flatpickr-day {
+    border-radius: 8px;
+    margin: 2px;
+    transition: all 0.2s ease;
+}
+
+.flatpickr-day:hover {
+    background: #e7f1ff;
+    border-color: #0d6efd;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+    font-weight: 600;
+}
+
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+}
+
+.flatpickr-day.today {
+    border-color: #0d6efd;
+    font-weight: 600;
+}
+
+.flatpickr-day.today:hover {
+    background: #e7f1ff;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: #ced4da;
+    cursor: not-allowed;
+}
+
+.flatpickr-day.flatpickr-disabled:hover {
+    background: transparent;
+}
+
+/* Datepicker input styling */
+.datepicker {
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.datepicker:focus {
+    cursor: text;
+}
+

@@ -246,3 +246,7 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    @vite(['resources/js/flight-search.js'])
+@endpush

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GroupBookingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FlightSearchController;
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -16,6 +17,9 @@ Route::get('/air-charter', [HomeController::class, 'airCharter'])->name('air-cha
 Route::get('/mice', [HomeController::class, 'mice'])->name('mice');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+// Flight Search
+Route::post('/flight-search/submit', [FlightSearchController::class, 'submit'])->name('flight-search.submit');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/fix-departure', [HomeController::class, 'fixDeparture'])->name('fix-departure');
