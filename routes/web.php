@@ -11,6 +11,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Group Booking
 Route::get('/group-booking', [GroupBookingController::class, 'index'])->name('group-booking.index');
+Route::post('/group-booking/submit', [GroupBookingController::class, 'submit'])->name('group-booking.submit');
 
 // Other Pages
 Route::get('/air-charter', [HomeController::class, 'airCharter'])->name('air-charter');

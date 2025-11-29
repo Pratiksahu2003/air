@@ -3,88 +3,214 @@
 @section('title', 'Group Flight Booking - ' . config('site.name') . ' | Best Group Fares')
 
 @section('content')
-    <!-- Page Header -->
-    <section class="page-header text-white py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h1 class="display-4 fw-bold mb-3">Group Flight Booking</h1>
-                    <p class="lead">Get the Best Group Fares for Domestic and International Flights</p>
+    <!-- Modern Banner Section -->
+    <section class="modern-banner position-relative overflow-hidden">
+        <div class="banner-background">
+            <img src="{{ asset('Banner/b3.avif') }}" alt="Group Flight Booking" class="banner-image">
+            <div class="banner-overlay"></div>
+        </div>
+        <div class="container position-relative">
+            <div class="row align-items-center min-vh-50">
+                <div class="col-lg-8 col-md-10 mx-auto text-center text-white">
+                    <div class="banner-content" data-aos="fade-up" data-aos-duration="1000">
+                        <div class="banner-badge mb-3">
+                            <span class="badge-custom">
+                                <i class="fas fa-users me-2"></i>Best Group Fares Available
+                            </span>
+                        </div>
+                        <h1 class="banner-title mb-4">
+                            Group Flight Booking
+                            <span class="title-highlight">Made Easy</span>
+                        </h1>
+                        <p class="banner-subtitle mb-4">
+                            Get exclusive discounted rates for group travel with significant savings. 
+                            Perfect for corporate teams, family reunions, and tour groups.
+                        </p>
+                        <div class="banner-features mb-5">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="feature-item">
+                                        <i class="fas fa-tags feature-icon"></i>
+                                        <span>Special Group Fares</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="feature-item">
+                                        <i class="fas fa-user-tie feature-icon"></i>
+                                        <span>Dedicated Support</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="feature-item">
+                                        <i class="fas fa-globe feature-icon"></i>
+                                        <span>Worldwide Coverage</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="banner-cta">
+                            <a href="#bookingFormSection" class="btn btn-light btn-lg px-5 py-3 rounded-pill shadow-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Request Quote Now
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="banner-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
         </div>
     </section>
 
     <!-- Group Booking Form -->
-    <section class="py-5">
+    <section id="bookingFormSection" class="py-5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="card shadow-lg border-0">
-                        <div class="card-body p-4">
-                            <h3 class="card-title text-center mb-4">
-                                <i class="fas fa-users text-primary me-2"></i>Request Group Booking Quote
+                <div class="col-lg-11">
+                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                        <div class="card-header bg-primary text-white py-4">
+                            <h3 class="card-title text-center mb-0">
+                                <i class="fas fa-users me-2"></i>Request Group Booking Quote
                             </h3>
+                            <p class="text-center mb-0 mt-2 opacity-90">Fill in the details below and we'll get back to you with the best group fares</p>
+                        </div>
+                        <div class="card-body p-4 p-md-5">
                             <form id="groupBookingForm">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">From City</label>
-                                        <div class="input-group position-relative">
-                                            <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                            <input type="text" class="form-control" name="from_city" placeholder="Delhi, India (DEL)" required>
+                                <!-- Route Selection -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-heading mb-3">
+                                        <i class="fas fa-route text-primary me-2"></i>Travel Details
+                                    </h5>
+                                    <div class="row g-3">
+                                        <div class="col-lg-5 col-md-6 position-relative">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-plane-departure me-1 text-primary"></i>From City
+                                            </label>
+                                            <div class="input-group position-relative">
+                                                <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                                                <input type="text" class="form-control" id="fromCity" name="from_city" placeholder="Delhi, India (DEL)" autocomplete="off" required>
+                                                <div class="airport-suggestions" id="fromSuggestions"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-md-12 text-center d-flex align-items-end justify-content-center pb-2">
+                                            <button type="button" class="btn btn-outline-primary btn-sm rounded-circle" id="swapCities" title="Swap cities">
+                                                <i class="fas fa-exchange-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-5 col-md-6 position-relative">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-plane-arrival me-1 text-primary"></i>To City
+                                            </label>
+                                            <div class="input-group position-relative">
+                                                <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                                                <input type="text" class="form-control" id="toCity" name="to_city" placeholder="Mumbai, India (BOM)" autocomplete="off" required>
+                                                <div class="airport-suggestions" id="toSuggestions"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">To City</label>
-                                        <div class="input-group position-relative">
-                                            <span class="input-group-text"><i class="fas fa-plane-arrival"></i></span>
-                                            <input type="text" class="form-control" name="to_city" placeholder="Mumbai, India (BOM)" required>
+                                </div>
+
+                                <!-- Date & Passengers -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-heading mb-3">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>Travel Dates & Group Size
+                                    </h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-calendar me-1 text-primary"></i>Departure Date
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-calendar text-primary"></i></span>
+                                                <input type="text" class="form-control datepicker" id="departureDate" name="departure_date" placeholder="Select Departure Date" required readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-calendar-check me-1 text-primary"></i>Return Date <span class="text-muted small">(Optional)</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-calendar text-primary"></i></span>
+                                                <input type="text" class="form-control datepicker" id="returnDate" name="return_date" placeholder="Select Return Date" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-users me-1 text-primary"></i>Number of Passengers
+                                            </label>
+                                            <select class="form-select" name="passengers" required>
+                                                <option value="">Select Group Size</option>
+                                                <option value="10-20">10-20 Passengers</option>
+                                                <option value="21-30">21-30 Passengers</option>
+                                                <option value="31-50">31-50 Passengers</option>
+                                                <option value="51-100">51-100 Passengers</option>
+                                                <option value="100+">100+ Passengers</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-bold">Departure Date</label>
-                                        <input type="date" class="form-control" name="departure_date" required>
+                                </div>
+
+                                <!-- Contact Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-heading mb-3">
+                                        <i class="fas fa-user-circle text-primary me-2"></i>Contact Information
+                                    </h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Your Name <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-user text-primary"></i></span>
+                                                <input type="text" class="form-control" name="name" placeholder="Enter your full name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-envelope text-primary"></i></span>
+                                                <input type="email" class="form-control" name="email" placeholder="your.email@example.com" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-phone text-primary"></i></span>
+                                                <input type="tel" class="form-control" name="phone" placeholder="+91 1234567890" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Organization/Company</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="fas fa-building text-primary"></i></span>
+                                                <input type="text" class="form-control" name="organization" placeholder="Company name (optional)">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-bold">Return Date (Optional)</label>
-                                        <input type="date" class="form-control" name="return_date">
+                                </div>
+
+                                <!-- Additional Requirements -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-heading mb-3">
+                                        <i class="fas fa-clipboard-list text-primary me-2"></i>Additional Requirements
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold">Special Requirements or Preferences</label>
+                                            <textarea class="form-control" name="requirements" rows="4" placeholder="Any special requirements, preferred airlines, meal preferences, seat preferences, etc."></textarea>
+                                            <small class="form-text text-muted">Please provide any additional information that will help us serve you better</small>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-bold">Number of Passengers</label>
-                                        <select class="form-select" name="passengers" required>
-                                            <option value="">Select</option>
-                                            <option value="10-20">10-20 Passengers</option>
-                                            <option value="21-30">21-30 Passengers</option>
-                                            <option value="31-50">31-50 Passengers</option>
-                                            <option value="51-100">51-100 Passengers</option>
-                                            <option value="100+">100+ Passengers</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Your Name</label>
-                                        <input type="text" class="form-control" name="name" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Email</label>
-                                        <input type="email" class="form-control" name="email" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Phone Number</label>
-                                        <input type="tel" class="form-control" name="phone" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Organization/Company</label>
-                                        <input type="text" class="form-control" name="organization">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label fw-bold">Additional Requirements</label>
-                                        <textarea class="form-control" name="requirements" rows="4" placeholder="Any special requirements, preferred airlines, etc."></textarea>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                                            <i class="fas fa-paper-plane me-2"></i>Request Group Booking Quote
-                                        </button>
-                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="form-section">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+                                        <i class="fas fa-paper-plane me-2"></i>Request Group Booking Quote
+                                    </button>
+                                    <p class="text-center text-muted small mt-3 mb-0">
+                                        <i class="fas fa-shield-alt me-1"></i>Your information is secure and will only be used for booking purposes
+                                    </p>
                                 </div>
                             </form>
                         </div>
@@ -197,13 +323,11 @@
     </section>
 @endsection
 
+@push('styles')
+@vite(['resources/css/group-booking.css'])
+@endpush
+
 @push('scripts')
-<script>
-    document.getElementById('groupBookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Thank you for your group booking request! Our team will contact you shortly with the best group fare quotes.');
-        this.reset();
-    });
-</script>
+@vite(['resources/js/group-booking.js'])
 @endpush
 
