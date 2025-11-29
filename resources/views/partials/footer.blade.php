@@ -35,7 +35,7 @@
                     <li class="mb-2"><a href="{{ route('group-booking.index') }}" class="footer-link">Benefits</a></li>
                     <li class="mb-2"><a href="{{ route('airlines') }}" class="footer-link">Airlines</a></li>
                     <li class="mb-2"><a href="{{ route('airports') }}" class="footer-link">Airports</a></li>
-                    <li class="mb-2"><a href="{{ route('blog') }}" class="footer-link">Blog</a></li>
+                    <li class="mb-2"><a href="{{ route('blog.index') }}" class="footer-link">Blog</a></li>
                 </ul>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
