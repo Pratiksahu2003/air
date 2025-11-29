@@ -354,13 +354,32 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     submitBtn.disabled = true;
     spinner.classList.remove('d-none');
     
-    const formData = new FormData(this);
+    // Build FormData manually to ensure all fields are included
+    const formData = new FormData();
     
-    // Get CKEditor content
+    // Add all form fields explicitly
+    formData.append('title', title);
     formData.append('content', content);
-    
-    // Convert is_published checkbox
+    formData.append('slug', document.getElementById('slug').value || '');
+    formData.append('excerpt', document.getElementById('excerpt').value || '');
+    formData.append('category_id', document.getElementById('category_id').value || '');
+    formData.append('meta_title', document.getElementById('meta_title').value || '');
+    formData.append('meta_description', document.getElementById('meta_description').value || '');
     formData.append('is_published', document.getElementById('is_published').checked ? 1 : 0);
+    formData.append('published_at', document.getElementById('published_at').value || '');
+    
+    // Add tags
+    const tagsSelect = document.getElementById('tags');
+    const selectedTags = Array.from(tagsSelect.selectedOptions).map(option => option.value);
+    selectedTags.forEach(tagId => {
+        formData.append('tags[]', tagId);
+    });
+    
+    // Add featured image if selected
+    const featuredImage = document.getElementById('featured_image').files[0];
+    if (featuredImage) {
+        formData.append('featured_image', featuredImage);
+    }
     
     axios.post('{{ route('admin.api.posts.store') }}', formData, {
         headers: {
