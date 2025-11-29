@@ -93,7 +93,7 @@ class PostController extends Controller
             ], 422);
         }
 
-        $data = $request->all();
+        $data = $request->except(['featured_image']);
         
         // Generate slug if not provided
         if (empty($data['slug'])) {
@@ -194,7 +194,7 @@ class PostController extends Controller
             ], 422);
         }
 
-        $data = $request->all();
+        $data = $request->except(['featured_image']);
 
         // Generate slug if not provided and title changed
         if (empty($data['slug']) && $post->title !== $data['title']) {

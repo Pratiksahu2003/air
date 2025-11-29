@@ -425,10 +425,16 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
         });
     }
     
-    // Add featured image if selected
+    // Add featured image if a new file is selected
     const featuredImageInput = document.getElementById('featured_image');
-    if (featuredImageInput && featuredImageInput.files && featuredImageInput.files[0]) {
-        formData.append('featured_image', featuredImageInput.files[0]);
+    if (featuredImageInput && featuredImageInput.files && featuredImageInput.files.length > 0) {
+        const file = featuredImageInput.files[0];
+        if (file) {
+            formData.append('featured_image', file, file.name);
+            console.log('Featured image added:', file.name, 'Size:', file.size, 'Type:', file.type);
+        }
+    } else {
+        console.log('No featured image file selected');
     }
     
     // Use POST with _method=PUT for better FormData compatibility
@@ -437,7 +443,11 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     // Debug: Log FormData contents (remove in production)
     console.log('FormData contents:');
     for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
+        if (pair[1] instanceof File) {
+            console.log(pair[0] + ': [File] ' + pair[1].name + ' (' + pair[1].size + ' bytes, ' + pair[1].type + ')');
+        } else {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
     }
     
     axios.post(`{{ route('admin.api.posts.update', ':id') }}`.replace(':id', postId), formData, {
