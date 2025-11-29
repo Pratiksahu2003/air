@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GroupBookingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FlightSearchController;
+use App\Http\Controllers\BlogController;
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -34,5 +35,10 @@ Route::get('/finance-payment', [HomeController::class, 'financePayment'])->name(
 Route::get('/airlines', [HomeController::class, 'airlines'])->name('airlines');
 Route::get('/airports', [HomeController::class, 'airports'])->name('airports');
 Route::get('/api/airports', [HomeController::class, 'getAirports'])->name('api.airports');
-Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+
+// Blog Routes
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/tag/{slug}', [BlogController::class, 'tag'])->name('blog.tag');
 

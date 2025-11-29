@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\FlightEnquiryController;
 use App\Http\Controllers\Admin\GroupBookingController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,5 +63,19 @@ Route::prefix('admin')->name('admin.api.')->middleware(['web', 'admin'])->group(
     // Settings API Routes (Admin only)
     Route::get('/settings', [SettingsController::class, 'getConfig'])->name('settings.index');
     Route::match(['put', 'post'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+    
+    // Blog Management API Routes
+    Route::get('/posts', [PostController::class, 'getPosts'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    Route::match(['put', 'post'], '/posts/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    
+    // Category Management API Routes
+    Route::get('/categories', [CategoryController::class, 'getCategories'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 

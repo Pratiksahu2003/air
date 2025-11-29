@@ -48,12 +48,7 @@
                     </a>
                 </li>
                 @endif
-                <li>
-                    <a href="#" class="">
-                        <i class="fas fa-plane"></i>
-                        <span>Flights</span>
-                    </a>
-                </li>
+            
                 <li>
                     <a href="{{ route('admin.group-bookings.index') }}" class="{{ request()->routeIs('admin.group-bookings.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
@@ -70,6 +65,18 @@
                     <a href="{{ route('admin.flight-enquiries.index') }}" class="{{ request()->routeIs('admin.flight-enquiries.*') ? 'active' : '' }}">
                         <i class="fas fa-plane"></i>
                         <span>Flight Enquiries</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.posts.index') }}" class="{{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog Posts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <i class="fas fa-folder"></i>
+                        <span>Categories</span>
                     </a>
                 </li>
                 @if(Auth::user()->isAdmin())

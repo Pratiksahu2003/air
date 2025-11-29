@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\FlightEnquiryController;
 use App\Http\Controllers\Admin\GroupBookingController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +55,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         // Settings Routes (Admin only - check in controller)
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        
+        // Blog Management Routes
+        Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+        Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+        Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     });
 });
 
