@@ -18,6 +18,18 @@ class Airpot extends Model
      *
      * @var array<int, string>
      */
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'code',
@@ -30,6 +42,4 @@ class Airpot extends Model
         'Address',
         'Contact',
     ];
-
-   
 }

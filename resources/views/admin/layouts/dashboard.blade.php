@@ -33,10 +33,18 @@
                         <span>Users</span>
                     </a>
                 </li>
+                @endif
                 <li>
-                    <a href="#" class="">
-                        <i class="fas fa-user-shield"></i>
-                        <span>Admins</span>
+                    <a href="{{ route('admin.airports.index') }}" class="{{ request()->routeIs('admin.airports.*') ? 'active' : '' }}">
+                        <i class="fas fa-plane-departure"></i>
+                        <span>Airports</span>
+                    </a>
+                </li>
+                @if(Auth::user()->isAdmin())
+                <li>
+                    <a href="{{ route('admin.airlines.index') }}" class="{{ request()->routeIs('admin.airlines.*') ? 'active' : '' }}">
+                        <i class="fas fa-plane"></i>
+                        <span>Airlines</span>
                     </a>
                 </li>
                 @endif
@@ -47,15 +55,21 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="">
-                        <i class="fas fa-book"></i>
-                        <span>Bookings</span>
+                    <a href="{{ route('admin.group-bookings.index') }}" class="{{ request()->routeIs('admin.group-bookings.*') ? 'active' : '' }}">
+                        <i class="fas fa-users"></i>
+                        <span>Group Bookings</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="">
+                    <a href="{{ route('admin.contact-enquiries.index') }}" class="{{ request()->routeIs('admin.contact-enquiries.*') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
-                        <span>Enquiries</span>
+                        <span>Contact Enquiries</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.flight-enquiries.index') }}" class="{{ request()->routeIs('admin.flight-enquiries.*') ? 'active' : '' }}">
+                        <i class="fas fa-plane"></i>
+                        <span>Flight Enquiries</span>
                     </a>
                 </li>
                 <li>
