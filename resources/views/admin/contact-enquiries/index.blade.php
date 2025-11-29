@@ -112,6 +112,8 @@
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+const isAdmin = {{ Auth::user()->isAdmin() ? 'true' : 'false' }};
+
 let enquiryModal;
 let currentPage = 1;
 let currentFilters = {};
@@ -159,9 +161,9 @@ function loadEnquiries(page = 1, filters = null) {
                         <button class="btn btn-sm btn-info" onclick="viewEnquiry(${enquiry.id})" title="View">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteEnquiry(${enquiry.id})" title="Delete">
+                        ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="deleteEnquiry(${enquiry.id})" title="Delete">
                             <i class="fas fa-trash"></i>
-                        </button>
+                        </button>` : ''}
                     </td>
                 </tr>
             `).join('');

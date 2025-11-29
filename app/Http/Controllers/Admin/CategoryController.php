@@ -137,6 +137,13 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only admins can delete categories'
+            ], 403);
+        }
+
         $category = Category::find($id);
 
         if (!$category) {

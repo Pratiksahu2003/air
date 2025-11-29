@@ -103,6 +103,7 @@
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+const isAdmin = {{ Auth::user()->isAdmin() ? 'true' : 'false' }};
 let userModal;
 let isEditMode = false;
 
@@ -147,9 +148,9 @@ function loadUsers() {
                         <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})" title="Delete" ${user.id === {{ auth()->id() }} ? 'disabled' : ''} ${user.id === {{ auth()->id() }} ? 'style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                        ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})" title="Delete" ${user.id === {{ auth()->id() }} ? 'disabled' : ''} ${user.id === {{ auth()->id() }} ? 'style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                             <i class="fas fa-trash"></i>
-                        </button>
+                        </button>` : ''}
                     </td>
                 </tr>
             `).join('');

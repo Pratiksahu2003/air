@@ -133,6 +133,13 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only admins can delete tags'
+            ], 403);
+        }
+
         $tag = Tag::find($id);
 
         if (!$tag) {

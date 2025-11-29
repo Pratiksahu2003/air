@@ -236,6 +236,13 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only admins can delete posts'
+            ], 403);
+        }
+
         $post = Post::find($id);
 
         if (!$post) {

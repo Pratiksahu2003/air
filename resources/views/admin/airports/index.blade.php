@@ -218,6 +218,7 @@
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+const isAdmin = {{ Auth::user()->isAdmin() ? 'true' : 'false' }};
 let airportModal;
 let isEditMode = false;
 let currentPage = 1;
@@ -282,9 +283,9 @@ function loadAirports(page = 1, filters = null) {
                         <button class="btn btn-sm btn-primary" onclick="editAirport(${airport.id})" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteAirport(${airport.id})" title="Delete">
+                        ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="deleteAirport(${airport.id})" title="Delete">
                             <i class="fas fa-trash"></i>
-                        </button>
+                        </button>` : ''}
                     </td>
                 </tr>
             `).join('');

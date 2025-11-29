@@ -149,6 +149,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only admins can delete users'
+            ], 403);
+        }
+
         $user = User::find($id);
 
         if (!$user) {

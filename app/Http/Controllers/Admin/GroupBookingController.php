@@ -131,10 +131,10 @@ class GroupBookingController extends Controller
     public function destroy($id)
     {
         try {
-            if (!Auth::check() || !Auth::user()->isAdminOrSubAdmin()) {
+            if (!Auth::check() || !Auth::user()->isAdmin()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'You do not have permission to access this area.'
+                    'message' => 'Only admins can delete group bookings'
                 ], 403);
             }
 
