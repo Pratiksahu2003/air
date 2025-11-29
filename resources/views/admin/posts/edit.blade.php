@@ -34,7 +34,7 @@
 
                     <div class="mb-3">
                         <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="content" name="content" rows="15" required>{{ $post->content }}</textarea>
+                        <textarea class="form-control" id="content" name="content" rows="15" required>{!! $post->content !!}</textarea>
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -96,14 +96,13 @@
                                 <i class="fas fa-plus me-1"></i>Add New Tag
                             </button>
                         </div>
-                        <div class="card-body" id="tags-container">
-                            @foreach($tags as $tag)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->id }}" id="tag_{{ $tag->id }}"
-                                        {{ $post->tags->contains($tag->id) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
-                                </div>
-                            @endforeach
+                        <div class="card-body">
+                            <select class="form-select" id="tags" name="tags[]" multiple size="8" style="min-height: 200px;">
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'selected' : '' }}>{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
+                            <small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple tags</small>
                         </div>
                     </div>
 
@@ -158,35 +157,55 @@
 @endsection
 
 @push('styles')
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 @endpush
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 <script>
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-// Initialize Quill editor
-const quill = new Quill('#content', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['link', 'image', 'video'],
-            ['blockquote', 'code-block'],
-            ['clean']
-        ]
-    }
-});
+// Get the content from textarea before initializing CKEditor
+const contentTextarea = document.getElementById('content');
+const initialContent = contentTextarea.value;
 
-// Set initial content
-quill.root.innerHTML = `{!! addslashes($post->content) !!}`;
+// Initialize CKEditor
+let editor;
+ClassicEditor
+    .create(document.querySelector('#content'), {
+        initialData: initialContent,
+        toolbar: {
+            items: [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                'bulletedList', 'numberedList', '|',
+                'alignment', '|',
+                'link', 'insertImage', 'insertTable', 'blockQuote', 'codeBlock', '|',
+                'undo', 'redo', '|',
+                'removeFormat'
+            ]
+        },
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+            ]
+        },
+        fontSize: {
+            options: [9, 11, 13, 'default', 17, 19, 21]
+        }
+    })
+    .then(editorInstance => {
+        editor = editorInstance;
+    })
+    .catch(error => {
+        console.error('Error initializing CKEditor:', error);
+    });
 
 // Auto-generate slug from title
 document.getElementById('title').addEventListener('input', function() {
@@ -242,15 +261,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(function(response) {
                 const newTag = response.data.data;
                 
-                // Add new tag to the tags container
-                const tagsContainer = document.getElementById('tags-container');
-                const newTagHtml = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="tags[]" value="${newTag.id}" id="tag_${newTag.id}" checked>
-                        <label class="form-check-label" for="tag_${newTag.id}">${newTag.name}</label>
-                    </div>
-                `;
-                tagsContainer.insertAdjacentHTML('beforeend', newTagHtml);
+                // Add new tag to the select dropdown
+                const tagsSelect = document.getElementById('tags');
+                const newOption = document.createElement('option');
+                newOption.value = newTag.id;
+                newOption.textContent = newTag.name;
+                newOption.selected = true;
+                tagsSelect.appendChild(newOption);
                 
                 Swal.fire({
                     icon: 'success',
@@ -299,6 +316,17 @@ function openAddTagModal() {
 document.getElementById('postForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
+    // Check if editor is ready
+    if (!editor) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Editor is not ready. Please wait a moment and try again.',
+            confirmButtonColor: '#0d6efd'
+        });
+        return;
+    }
+    
     const submitBtn = document.getElementById('submitBtn');
     const spinner = document.getElementById('submitSpinner');
     
@@ -308,8 +336,8 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     const postId = document.getElementById('post_id').value;
     
-    // Get Quill content
-    const content = quill.root.innerHTML;
+    // Get CKEditor content
+    const content = editor.getData();
     formData.append('content', content);
     
     // Convert is_published checkbox

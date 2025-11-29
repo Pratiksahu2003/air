@@ -84,6 +84,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 const isAdmin = {{ Auth::user()->isAdmin() ? 'true' : 'false' }};
+const editPostBaseUrl = '{{ url("/admin/posts") }}';
 let currentPage = 1;
 let currentFilters = {};
 
@@ -127,7 +128,7 @@ function loadPosts(page = 1) {
                     <td>${post.views_count || 0}</td>
                     <td>${post.published_at ? new Date(post.published_at).toLocaleDateString() : '-'}</td>
                     <td>
-                        <a href="{{ route('admin.posts.edit', ':id') }}".replace(':id', post.id) class="btn btn-sm btn-primary" title="Edit">
+                        <a href="${editPostBaseUrl}/${post.id}/edit" class="btn btn-sm btn-primary" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="deletePost(${post.id})" title="Delete">
