@@ -22,6 +22,7 @@ return [
         'phone' => '+917838848340', // For tel: links (no spaces)
         'phone_display' => '+91 78388 48340', // For display (with spaces)
         'email' => 'Groups@AirRj.com',
+        'admin_email' => 'Groups@AirRj.com', // Admin/notification email for contact form
         'address' => '4th Floor. 96A, BLOCK-B, Sector 13, Dwarka, New Delhi, Delhi, 110078',
         'support_hours' => '24/7 Customer Support',
     ],

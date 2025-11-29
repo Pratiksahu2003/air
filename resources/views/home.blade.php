@@ -17,11 +17,6 @@
                     <div class="search-form-wrapper">
                         @include('components.flight-search-form')
                     </div>
-                    
-                    <!-- Group Booking Component -->
-                    <div class="mt-4">
-                        @include('components.group-booking-card')
-                    </div>
                 </div>
             </div>
         </div>
@@ -57,6 +52,62 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Benefits & Key Advantages Section -->
+    <section class="benefits-section py-5 position-relative">
+        <div class="benefits-decorative-top"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="benefits-title mb-3">
+                        Our <span class="benefits-highlight">Benefits</span> & Key Advantages
+                    </h2>
+                    <p class="benefits-description">
+                        Discover the key advantages of booking with {{ config('site.name') }} — enjoy exclusive offers, group packages, and guaranteed best prices on domestic and international flights.
+                    </p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon benefit-icon-vip">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h5 class="benefit-card-title">VIP Packages</h5>
+                        <p class="benefit-card-text">Experience premium travel with luxury seating, lounge access, and concierge services.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon benefit-icon-concert">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h5 class="benefit-card-title">Concert Tickets</h5>
+                        <p class="benefit-card-text">Book tickets for top events and tours along with your flights in one click.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon benefit-icon-travel">
+                            <i class="fas fa-suitcase-rolling"></i>
+                        </div>
+                        <h5 class="benefit-card-title">Travel Packages</h5>
+                        <p class="benefit-card-text">Book flights with hotel stays and sightseeing included in one affordable package.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon benefit-icon-guarantee">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h5 class="benefit-card-title">Best Price Guarantee</h5>
+                        <p class="benefit-card-text">We ensure the best flight fares with 100% transparency and no hidden fees.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landmarks-silhouette"></div>
     </section>
 
     <!-- Why FareHawker Section -->

@@ -117,6 +117,22 @@ function showSuggestions(input, suggestionsContainer) {
     });
 }
 
+// Swap Cities Functionality
+const swapCitiesBtn = document.getElementById('swapCities');
+if (swapCitiesBtn) {
+    swapCitiesBtn.addEventListener('click', () => {
+        const fromValue = fromCityInput.value;
+        const toValue = toCityInput.value;
+        
+        fromCityInput.value = toValue;
+        toCityInput.value = fromValue;
+        
+        // Trigger input event to update suggestions if needed
+        fromCityInput.dispatchEvent(new Event('input'));
+        toCityInput.dispatchEvent(new Event('input'));
+    });
+}
+
 // Event Listeners for Airport Suggestions
 fromCityInput.addEventListener('input', () => {
     showSuggestions(fromCityInput, fromSuggestions);
@@ -318,4 +334,66 @@ document.querySelectorAll('.airline-card, .service-card, .route-item').forEach(e
 
 // Initialize
 console.log('FareHawker website initialized');
+
+// Axios setup for contact form (if present on page)
+if (typeof axios !== 'undefined') {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+
+        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        if (csrfToken) {
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        }
+
+        const successAlert = document.getElementById('contactSuccess');
+        const errorAlert = document.getElementById('contactError');
+
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (successAlert) {
+                successAlert.classList.add('d-none');
+            }
+            if (errorAlert) {
+                errorAlert.classList.add('d-none');
+                errorAlert.innerHTML = '';
+            }
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            axios.post(contactForm.getAttribute('action') || '/contact', data)
+                .then(function (response) {
+                    if (successAlert) {
+                        successAlert.textContent = response.data.message || 'Thank you for contacting us! We will get back to you soon.';
+                        successAlert.classList.remove('d-none');
+                    } else {
+                        alert(response.data.message || 'Thank you for contacting us! We will get back to you soon.');
+                    }
+                    contactForm.reset();
+                })
+                .catch(function (error) {
+                    let message = 'Something went wrong. Please try again later.';
+                    if (error.response && error.response.status === 422 && error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        message = '';
+                        Object.keys(errors).forEach(function (field) {
+                            errors[field].forEach(function (err) {
+                                message += `<div>${err}</div>`;
+                            });
+                        });
+                    }
+
+                    if (errorAlert) {
+                        errorAlert.innerHTML = message;
+                        errorAlert.classList.remove('d-none');
+                    } else {
+                        alert(message.replace(/<[^>]*>?/gm, ''));
+                    }
+                });
+        });
+    }
+}
 

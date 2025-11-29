@@ -1,72 +1,92 @@
 <!-- Footer -->
-<footer class="footer bg-dark text-white py-5">
+<footer class="footer py-5">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="mb-3">
-                    <img src="{{ asset(config('site.logo')) }}" alt="{{ config('site.name') }}" class="footer-logo mb-2">
-                    <h5 class="text-white">{{ config('site.name') }}</h5>
-                </div>
-                <p>{{ config('site.description') }}</p>
-                <div class="social-links mt-3">
-                    <a href="{{ config('site.social.facebook') }}" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
-                    <a href="{{ config('site.social.twitter') }}" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-                    <a href="{{ config('site.social.instagram') }}" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="{{ config('site.social.linkedin') }}" class="text-white me-3"><i class="fab fa-linkedin-in fa-lg"></i></a>
-                    <a href="{{ config('site.social.youtube') }}" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Group Booking</h5>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-3 fw-bold">Group Booking</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{{ route('group-booking.index') }}" class="text-white-50">Group Flight Booking</a></li>
-                    <li><a href="{{ route('group-booking.index') }}#domestic" class="text-white-50">Domestic Group Booking</a></li>
-                    <li><a href="{{ route('group-booking.index') }}#international" class="text-white-50">International Group Booking</a></li>
-                    <li><a href="{{ route('fix-departure') }}" class="text-white-50">Fix Departure</a></li>
-                    <li><a href="{{ route('air-charter') }}" class="text-white-50">Air Charter</a></li>
+                    <li class="mb-2"><a href="{{ route('group-booking.index') }}" class="footer-link">Bulk Air Tickets</a></li>
+                    <li class="mb-2"><a href="{{ route('group-booking.index') }}#domestic" class="footer-link">Domestic Airport</a></li>
+                    <li class="mb-2"><a href="{{ route('group-booking.index') }}#international" class="footer-link">International Airport</a></li>
+                    <li class="mb-2"><a href="{{ route('group-booking.index') }}" class="footer-link">Sectors We Reach</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Services</h5>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-3 fw-bold">Company</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{{ route('services') }}" class="text-white-50">Our Services</a></li>
-                    <li><a href="{{ route('mice') }}" class="text-white-50">MICE Solutions</a></li>
-                    <li><a href="{{ route('group-booking.index') }}" class="text-white-50">Corporate Travel</a></li>
-                    <li><a href="{{ route('group-booking.index') }}" class="text-white-50">Tour Operators</a></li>
-                    <li><a href="{{ route('group-booking.index') }}" class="text-white-50">Group Fare Deals</a></li>
+                    <li class="mb-2"><a href="{{ route('about') }}" class="footer-link">About Us</a></li>
+                    <li class="mb-2"><a href="{{ route('payment-options') }}" class="footer-link">Payment Options</a></li>
+                    <li class="mb-2"><a href="{{ route('finance-payment') }}" class="footer-link">Finance & Payment</a></li>
+                    <li class="mb-2"><a href="{{ route('contact') }}" class="footer-link">Customer Service</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Contact Info</h5>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-3 fw-bold">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{{ route('terms') }}" class="footer-link">Terms & Conditions</a></li>
+                    <li class="mb-2"><a href="{{ route('privacy') }}" class="footer-link">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="{{ route('faqs') }}" class="footer-link">FAQs</a></li>
+                    <li class="mb-2"><a href="{{ route('contact') }}" class="footer-link">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-3 fw-bold">More</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{{ route('group-booking.index') }}" class="footer-link">Benefits</a></li>
+                    <li class="mb-2"><a href="{{ route('airlines') }}" class="footer-link">Airlines</a></li>
+                    <li class="mb-2"><a href="{{ route('airports') }}" class="footer-link">Airports</a></li>
+                    <li class="mb-2"><a href="{{ route('blog') }}" class="footer-link">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+                <h5 class="mb-3 fw-bold">Contact Info</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2">
-                        <i class="fas fa-phone me-2"></i>
-                        <a href="tel:{{ config('site.contact.phone') }}" class="text-white-50">{{ config('site.contact.phone_display') }}</a>
+                        <strong>Email:</strong> 
+                        <a href="mailto:{{ config('site.contact.email', 'Groups@AirRj.com') }}" class="footer-link">{{ config('site.contact.email', 'Groups@AirRj.com') }}</a>
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-envelope me-2"></i>
-                        <a href="mailto:{{ config('site.contact.email') }}" class="text-white-50">{{ config('site.contact.email') }}</a>
+                        <strong>Call us:</strong> 
+                        <a href="tel:{{ config('site.contact.phone', '+917838848340') }}" class="footer-link">{{ config('site.contact.phone_display', '+91 78388 48340') }}</a>
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-map-marker-alt me-2"></i>
-                        <span class="text-white-50">{{ config('site.contact.address') }}</span>
+                        <a href="tel:{{ config('site.contact.phone', '+917838848340') }}" class="footer-link">{{ config('site.contact.phone_display', '+91 78388 48340') }}</a>
                     </li>
                     <li class="mb-2">
-                        <i class="fas fa-clock me-2"></i>
-                        <span class="text-white-50">{{ config('site.contact.support_hours') }}</span>
+                        {{ config('site.contact.address', '4th Floor. 96A, BLOCK-B, Sector 13, Dwarka, New Delhi, Delhi, 110078') }}
                     </li>
                 </ul>
             </div>
         </div>
-        <hr class="my-4 bg-secondary">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="mb-0">&copy; {{ date('Y') }} {{ config('site.name') }}. All rights reserved.</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="#" class="text-white-50 me-3">Terms of Use</a>
-                <a href="#" class="text-white-50 me-3">Privacy Policy</a>
-                <a href="{{ route('contact') }}" class="text-white-50">Contact Us</a>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">
+                        Copyright © {{ date('Y') }}. All Rights Reserved, 
+                        <span class="footer-brand">{{ config('site.name', 'AirRj.Com') }} (FAREHAWKER FLIGHT SERVICES LLP)</span>
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-links-footer">
+                        <a href="{{ config('site.social.facebook', '#') }}" class="social-icon" target="_blank" rel="noopener" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="{{ config('site.social.twitter', '#') }}" class="social-icon" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="{{ config('site.social.instagram', '#') }}" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="{{ config('site.social.linkedin', '#') }}" class="social-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="{{ config('site.social.pinterest', '#') }}" class="social-icon" target="_blank" rel="noopener" aria-label="Pinterest">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

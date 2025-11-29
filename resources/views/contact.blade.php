@@ -22,10 +22,16 @@
                 <div class="col-lg-8 mb-4">
                     <div class="card shadow-lg border-0">
                         <div class="card-body p-4">
-                            <h3 class="card-title mb-4">
+                            <h3 class="card-title mb-3">
                                 <i class="fas fa-envelope text-primary me-2"></i>Send us a Message
                             </h3>
-                            <form id="contactForm">
+                            <p class="text-muted mb-4">Fill out the form below and our team will get back to you shortly.</p>
+
+                            <div id="contactSuccess" class="alert alert-success d-none" role="alert"></div>
+                            <div id="contactError" class="alert alert-danger d-none" role="alert"></div>
+
+                            <form id="contactForm" method="post" action="{{ route('contact.submit') }}">
+                                @csrf
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">Your Name</label>
@@ -129,14 +135,7 @@
         </div>
     </section>
 @endsection
-
 @push('scripts')
-<script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Thank you for contacting us! We will get back to you soon.');
-        this.reset();
-    });
-</script>
+    {{-- Axios CDN for handling AJAX contact form submission --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 @endpush
-
