@@ -34,7 +34,7 @@
 
                     <div class="mb-3">
                         <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="content" name="content" rows="15" required>{!! $post->content !!}</textarea>
+                        <textarea class="form-control" id="content" name="content" rows="15">{!! $post->content !!}</textarea>
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -202,6 +202,11 @@ ClassicEditor
     })
     .then(editorInstance => {
         editor = editorInstance;
+        // Remove required attribute from hidden textarea to prevent validation errors
+        const contentTextarea = document.querySelector('#content');
+        if (contentTextarea) {
+            contentTextarea.removeAttribute('required');
+        }
     })
     .catch(error => {
         console.error('Error initializing CKEditor:', error);
@@ -327,6 +332,32 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
         return;
     }
     
+    // Validate required fields
+    const title = document.getElementById('title').value.trim();
+    const content = editor.getData().trim();
+    
+    if (!title) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please enter a title for the post.',
+            confirmButtonColor: '#0d6efd'
+        });
+        document.getElementById('title').focus();
+        return;
+    }
+    
+    if (!content) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please enter content for the post.',
+            confirmButtonColor: '#0d6efd'
+        });
+        editor.focus();
+        return;
+    }
+    
     const submitBtn = document.getElementById('submitBtn');
     const spinner = document.getElementById('submitSpinner');
     
@@ -337,7 +368,6 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     const postId = document.getElementById('post_id').value;
     
     // Get CKEditor content
-    const content = editor.getData();
     formData.append('content', content);
     
     // Convert is_published checkbox
