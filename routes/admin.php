@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AirlineController;
 use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\FlightEnquiryController;
 use App\Http\Controllers\Admin\GroupBookingController;
+use App\Http\Controllers\Admin\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         // Group Booking Management Routes (Admin and Subadmin - check in controller)
         Route::get('/group-bookings', [GroupBookingController::class, 'index'])->name('group-bookings.index');
+        
+        // Settings Routes (Admin only - check in controller)
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     });
 });
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AirlineController;
 use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\FlightEnquiryController;
 use App\Http\Controllers\Admin\GroupBookingController;
+use App\Http\Controllers\Admin\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,5 +57,9 @@ Route::prefix('admin')->name('admin.api.')->middleware(['web', 'admin'])->group(
     Route::get('/group-bookings', [GroupBookingController::class, 'getGroupBookings'])->name('group-bookings.index');
     Route::get('/group-bookings/{id}', [GroupBookingController::class, 'show'])->name('group-bookings.show');
     Route::delete('/group-bookings/{id}', [GroupBookingController::class, 'destroy'])->name('group-bookings.destroy');
+    
+    // Settings API Routes (Admin only)
+    Route::get('/settings', [SettingsController::class, 'getConfig'])->name('settings.index');
+    Route::match(['put', 'post'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 

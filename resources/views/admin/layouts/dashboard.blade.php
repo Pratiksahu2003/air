@@ -72,12 +72,14 @@
                         <span>Flight Enquiries</span>
                     </a>
                 </li>
+                @if(Auth::user()->isAdmin())
                 <li>
-                    <a href="#" class="">
+                    <a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
     </div>
