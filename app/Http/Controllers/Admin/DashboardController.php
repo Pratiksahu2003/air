@@ -8,14 +8,6 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
-    /**
      * Show the admin dashboard
      */
     public function index()

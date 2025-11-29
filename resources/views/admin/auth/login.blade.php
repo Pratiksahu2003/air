@@ -8,75 +8,107 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .login-wrapper {
+            width: 100%;
+            max-width: 480px;
         }
         .login-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            max-width: 450px;
-            width: 100%;
+            border: 1px solid #e9ecef;
         }
         .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+            background: #ffffff;
+            padding: 40px 40px 30px 40px;
             text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            max-height: 60px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
         }
         .login-header h2 {
             margin: 0;
-            font-weight: 600;
+            font-weight: 700;
+            color: #0d6efd;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
         .login-header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
+            margin: 0;
+            color: #6c757d;
+            font-size: 14px;
         }
         .login-body {
             padding: 40px;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .form-group label {
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #212529;
             margin-bottom: 8px;
+            font-size: 14px;
+            display: block;
         }
         .form-control {
-            border: 2px solid #e0e0e0;
+            border: 1.5px solid #dee2e6;
             border-radius: 8px;
             padding: 12px 15px;
             transition: all 0.3s;
+            font-size: 14px;
         }
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+            outline: none;
         }
         .btn-login {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0d6efd;
             border: none;
             border-radius: 8px;
-            padding: 12px;
+            padding: 14px;
             font-weight: 600;
             width: 100%;
             color: white;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            font-size: 15px;
         }
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: #0b5ed7;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
             color: white;
+        }
+        .btn-login:active {
+            transform: translateY(0);
         }
         .alert {
             border-radius: 8px;
             border: none;
+            font-size: 14px;
         }
         .input-icon {
             position: relative;
@@ -86,7 +118,8 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: #6c757d;
+            font-size: 14px;
         }
         .input-icon .form-control {
             padding-left: 45px;
@@ -95,16 +128,45 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .form-check-input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+        .form-check-label {
+            color: #495057;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        @media (max-width: 576px) {
+            .login-header {
+                padding: 30px 25px 20px 25px;
+            }
+            .login-body {
+                padding: 30px 25px;
+            }
+            .logo-container img {
+                max-height: 50px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h2><i class="fas fa-shield-alt me-2"></i>Admin Panel</h2>
-            <p>Sign in to your account</p>
-        </div>
-        <div class="login-body">
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-container">
+                    <img src="{{ asset(config('site.logo')) }}" alt="{{ config('site.name') }} Logo" class="img-fluid">
+                </div>
+                <h2>Admin Panel</h2>
+                <p>Sign in to your account</p>
+            </div>
+            <div class="login-body">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -125,7 +187,7 @@
                 @csrf
                 
                 <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                    <label for="email">Email Address</label>
                     <div class="input-icon">
                         <i class="fas fa-envelope"></i>
                         <input 
@@ -142,7 +204,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                    <label for="password">Password</label>
                     <div class="input-icon">
                         <i class="fas fa-lock"></i>
                         <input 
