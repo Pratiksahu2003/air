@@ -368,31 +368,79 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     const formData = new FormData();
     const postId = document.getElementById('post_id').value;
     
-    // Add all form fields explicitly
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('slug', document.getElementById('slug').value || '');
-    formData.append('excerpt', document.getElementById('excerpt').value || '');
-    formData.append('category_id', document.getElementById('category_id').value || '');
-    formData.append('meta_title', document.getElementById('meta_title').value || '');
-    formData.append('meta_description', document.getElementById('meta_description').value || '');
-    formData.append('is_published', document.getElementById('is_published').checked ? 1 : 0);
-    formData.append('published_at', document.getElementById('published_at').value || '');
+    // Validate that we have the required values
+    if (!title || title.trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Title is required and cannot be empty.',
+            confirmButtonColor: '#0d6efd'
+        });
+        submitBtn.disabled = false;
+        spinner.classList.add('d-none');
+        return;
+    }
+    
+    if (!content || content.trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Content is required and cannot be empty.',
+            confirmButtonColor: '#0d6efd'
+        });
+        submitBtn.disabled = false;
+        spinner.classList.add('d-none');
+        return;
+    }
+    
+    // Add all form fields explicitly - ensure values are strings
+    formData.append('title', String(title).trim());
+    formData.append('content', String(content).trim());
+    
+    const slugEl = document.getElementById('slug');
+    const excerptEl = document.getElementById('excerpt');
+    const categoryEl = document.getElementById('category_id');
+    const metaTitleEl = document.getElementById('meta_title');
+    const metaDescEl = document.getElementById('meta_description');
+    const publishedAtEl = document.getElementById('published_at');
+    
+    if (slugEl) formData.append('slug', slugEl.value ? String(slugEl.value).trim() : '');
+    if (excerptEl) formData.append('excerpt', excerptEl.value ? String(excerptEl.value).trim() : '');
+    if (categoryEl && categoryEl.value) formData.append('category_id', String(categoryEl.value));
+    if (metaTitleEl) formData.append('meta_title', metaTitleEl.value ? String(metaTitleEl.value).trim() : '');
+    if (metaDescEl) formData.append('meta_description', metaDescEl.value ? String(metaDescEl.value).trim() : '');
+    if (publishedAtEl && publishedAtEl.value) formData.append('published_at', String(publishedAtEl.value));
+    
+    const isPublishedEl = document.getElementById('is_published');
+    formData.append('is_published', isPublishedEl && isPublishedEl.checked ? '1' : '0');
     
     // Add tags
     const tagsSelect = document.getElementById('tags');
-    const selectedTags = Array.from(tagsSelect.selectedOptions).map(option => option.value);
-    selectedTags.forEach(tagId => {
-        formData.append('tags[]', tagId);
-    });
-    
-    // Add featured image if selected
-    const featuredImage = document.getElementById('featured_image').files[0];
-    if (featuredImage) {
-        formData.append('featured_image', featuredImage);
+    if (tagsSelect) {
+        const selectedTags = Array.from(tagsSelect.selectedOptions).map(option => option.value);
+        selectedTags.forEach(tagId => {
+            if (tagId) {
+                formData.append('tags[]', String(tagId));
+            }
+        });
     }
     
-    axios.put(`{{ route('admin.api.posts.update', ':id') }}`.replace(':id', postId), formData, {
+    // Add featured image if selected
+    const featuredImageInput = document.getElementById('featured_image');
+    if (featuredImageInput && featuredImageInput.files && featuredImageInput.files[0]) {
+        formData.append('featured_image', featuredImageInput.files[0]);
+    }
+    
+    // Use POST with _method=PUT for better FormData compatibility
+    formData.append('_method', 'PUT');
+    
+    // Debug: Log FormData contents (remove in production)
+    console.log('FormData contents:');
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
+    }
+    
+    axios.post(`{{ route('admin.api.posts.update', ':id') }}`.replace(':id', postId), formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
