@@ -43,11 +43,13 @@ const returnDateContainer = document.getElementById('returnDateContainer');
 const flightSearchForm = document.getElementById('flightSearchForm');
 const scrollTopBtn = document.getElementById('scrollTop');
 
-// Set minimum date to today
+// Set minimum date to today (only if departure input exists on page)
 const today = new Date().toISOString().split('T')[0];
-departureDateInput.min = today;
-if (returnDateInput) {
-    returnDateInput.min = today;
+if (departureDateInput) {
+    departureDateInput.min = today;
+    if (returnDateInput) {
+        returnDateInput.min = today;
+    }
 }
 
 // Main Tabs Switching (FLIGHTS / GROUP BOOKING)
@@ -64,19 +66,21 @@ mainTabs.forEach(btn => {
     });
 });
 
-// Trip Type Radio Buttons
+// Trip Type Radio Buttons (only if they exist)
 const tripTypeRadios = document.querySelectorAll('input[name="tripType"]');
-tripTypeRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-        if (radio.value === 'roundtrip') {
-            returnDateContainer.style.display = 'block';
-            returnDateInput.required = true;
-        } else {
-            returnDateContainer.style.display = 'none';
-            returnDateInput.required = false;
-        }
+if (tripTypeRadios.length > 0 && returnDateContainer && returnDateInput) {
+    tripTypeRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.value === 'roundtrip') {
+                returnDateContainer.style.display = 'block';
+                returnDateInput.required = true;
+            } else {
+                returnDateContainer.style.display = 'none';
+                returnDateInput.required = false;
+            }
+        });
     });
-});
+}
 
 // Airport Suggestions
 function showSuggestions(input, suggestionsContainer) {
@@ -117,9 +121,9 @@ function showSuggestions(input, suggestionsContainer) {
     });
 }
 
-// Swap Cities Functionality
+// Swap Cities Functionality (only if both inputs exist)
 const swapCitiesBtn = document.getElementById('swapCities');
-if (swapCitiesBtn) {
+if (swapCitiesBtn && fromCityInput && toCityInput) {
     swapCitiesBtn.addEventListener('click', () => {
         const fromValue = fromCityInput.value;
         const toValue = toCityInput.value;
@@ -133,50 +137,59 @@ if (swapCitiesBtn) {
     });
 }
 
-// Event Listeners for Airport Suggestions
-fromCityInput.addEventListener('input', () => {
-    showSuggestions(fromCityInput, fromSuggestions);
-});
-
-toCityInput.addEventListener('input', () => {
-    showSuggestions(toCityInput, toSuggestions);
-});
-
-// Close suggestions when clicking outside
-document.addEventListener('click', (e) => {
-    if (!fromCityInput.contains(e.target) && !fromSuggestions.contains(e.target)) {
-        fromSuggestions.classList.remove('show');
-    }
-    if (!toCityInput.contains(e.target) && !toSuggestions.contains(e.target)) {
-        toSuggestions.classList.remove('show');
-    }
-});
-
-// Passenger Counters (Adults, Children, Infants)
-const passengerButtons = document.querySelectorAll('.passenger-btn');
-passengerButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const field = btn.getAttribute('data-field');
-        const action = btn.getAttribute('data-action');
-        const input = document.getElementById(field);
-        const current = parseInt(input.value);
-        const max = field === 'adults' ? 50 : 50;
-        const min = field === 'adults' ? 1 : 0;
-        
-        if (action === 'increase' && current < max) {
-            input.value = current + 1;
-        } else if (action === 'decrease' && current > min) {
-            input.value = current - 1;
-        }
-        
-        // Update button states
-        updatePassengerButtons(field);
+// Event Listeners for Airport Suggestions (only if fields exist)
+if (fromCityInput && toCityInput && fromSuggestions && toSuggestions) {
+    fromCityInput.addEventListener('input', () => {
+        showSuggestions(fromCityInput, fromSuggestions);
     });
-});
+
+    toCityInput.addEventListener('input', () => {
+        showSuggestions(toCityInput, toSuggestions);
+    });
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!fromCityInput.contains(e.target) && !fromSuggestions.contains(e.target)) {
+            fromSuggestions.classList.remove('show');
+        }
+        if (!toCityInput.contains(e.target) && !toSuggestions.contains(e.target)) {
+            toSuggestions.classList.remove('show');
+        }
+    });
+}
+
+// Passenger Counters (Adults, Children, Infants) - only if buttons exist
+const passengerButtons = document.querySelectorAll('.passenger-btn');
+if (passengerButtons.length > 0) {
+    passengerButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const field = btn.getAttribute('data-field');
+            const action = btn.getAttribute('data-action');
+            const input = document.getElementById(field);
+            
+            if (!input) return; // Safety check
+            
+            const current = parseInt(input.value) || 0;
+            const max = field === 'adults' ? 50 : 50;
+            const min = field === 'adults' ? 1 : 0;
+            
+            if (action === 'increase' && current < max) {
+                input.value = current + 1;
+            } else if (action === 'decrease' && current > min) {
+                input.value = current - 1;
+            }
+            
+            // Update button states
+            updatePassengerButtons(field);
+        });
+    });
+}
 
 function updatePassengerButtons(field) {
     const input = document.getElementById(field);
-    const value = parseInt(input.value);
+    if (!input) return; // Safety check
+    
+    const value = parseInt(input.value) || 0;
     const min = field === 'adults' ? 1 : 0;
     const max = 50;
     
@@ -187,25 +200,35 @@ function updatePassengerButtons(field) {
     if (increaseBtn) increaseBtn.disabled = value >= max;
 }
 
-// Initialize button states
+// Initialize button states (only if passenger inputs exist)
 ['adults', 'children', 'infants'].forEach(field => {
-    updatePassengerButtons(field);
+    const input = document.getElementById(field);
+    if (input) {
+        updatePassengerButtons(field);
+    }
 });
 
 // WhatsApp Button
 const whatsappBtn = document.getElementById('whatsappBtn');
-if (whatsappBtn) {
+if (whatsappBtn && fromCityInput && toCityInput && departureDateInput) {
     whatsappBtn.addEventListener('click', () => {
         const fromCity = fromCityInput.value;
         const toCity = toCityInput.value;
         const departureDate = departureDateInput.value;
-        const returnDate = returnDateInput.value;
-        const adults = document.getElementById('adults').value;
-        const children = document.getElementById('children').value;
-        const infants = document.getElementById('infants').value;
-        const contactNumber = document.getElementById('contactNumber').value;
-        const emailAddress = document.getElementById('emailAddress').value;
-        const tripType = document.querySelector('input[name="tripType"]:checked').value;
+        const returnDate = returnDateInput ? returnDateInput.value : '';
+        const adultsInput = document.getElementById('adults');
+        const childrenInput = document.getElementById('children');
+        const infantsInput = document.getElementById('infants');
+        const contactNumberInput = document.getElementById('contactNumber');
+        const emailAddressInput = document.getElementById('emailAddress');
+        const tripTypeRadio = document.querySelector('input[name="tripType"]:checked');
+        
+        const adults = adultsInput ? adultsInput.value : '';
+        const children = childrenInput ? childrenInput.value : '';
+        const infants = infantsInput ? infantsInput.value : '';
+        const contactNumber = contactNumberInput ? contactNumberInput.value : '';
+        const emailAddress = emailAddressInput ? emailAddressInput.value : '';
+        const tripType = tripTypeRadio ? tripTypeRadio.value : 'oneway';
         
         if (!fromCity || !toCity || !departureDate || !contactNumber || !emailAddress) {
             alert('Please fill in all required fields');
@@ -226,18 +249,25 @@ if (whatsappBtn) {
 
 // Gmail Button
 const gmailBtn = document.getElementById('gmailBtn');
-if (gmailBtn) {
+if (gmailBtn && fromCityInput && toCityInput && departureDateInput) {
     gmailBtn.addEventListener('click', () => {
         const fromCity = fromCityInput.value;
         const toCity = toCityInput.value;
         const departureDate = departureDateInput.value;
-        const returnDate = returnDateInput.value;
-        const adults = document.getElementById('adults').value;
-        const children = document.getElementById('children').value;
-        const infants = document.getElementById('infants').value;
-        const contactNumber = document.getElementById('contactNumber').value;
-        const emailAddress = document.getElementById('emailAddress').value;
-        const tripType = document.querySelector('input[name="tripType"]:checked').value;
+        const returnDate = returnDateInput ? returnDateInput.value : '';
+        const adultsInput = document.getElementById('adults');
+        const childrenInput = document.getElementById('children');
+        const infantsInput = document.getElementById('infants');
+        const contactNumberInput = document.getElementById('contactNumber');
+        const emailAddressInput = document.getElementById('emailAddress');
+        const tripTypeRadio = document.querySelector('input[name="tripType"]:checked');
+        
+        const adults = adultsInput ? adultsInput.value : '';
+        const children = childrenInput ? childrenInput.value : '';
+        const infants = infantsInput ? infantsInput.value : '';
+        const contactNumber = contactNumberInput ? contactNumberInput.value : '';
+        const emailAddress = emailAddressInput ? emailAddressInput.value : '';
+        const tripType = tripTypeRadio ? tripTypeRadio.value : 'oneway';
         
         if (!fromCity || !toCity || !departureDate || !contactNumber || !emailAddress) {
             alert('Please fill in all required fields');
@@ -257,31 +287,35 @@ if (gmailBtn) {
     });
 }
 
-// Set return date minimum to departure date
-departureDateInput.addEventListener('change', () => {
-    if (returnDateInput) {
-        returnDateInput.min = departureDateInput.value;
-        if (returnDateInput.value && returnDateInput.value < departureDateInput.value) {
-            returnDateInput.value = departureDateInput.value;
+// Set return date minimum to departure date (only if departure input exists)
+if (departureDateInput) {
+    departureDateInput.addEventListener('change', () => {
+        if (returnDateInput) {
+            returnDateInput.min = departureDateInput.value;
+            if (returnDateInput.value && returnDateInput.value < departureDateInput.value) {
+                returnDateInput.value = departureDateInput.value;
+            }
         }
-    }
-});
-
-// Scroll to Top
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.add('show');
-    } else {
-        scrollTopBtn.classList.remove('show');
-    }
-});
-
-scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
     });
-});
+}
+
+// Scroll to Top (only if button exists)
+if (scrollTopBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollTopBtn.classList.add('show');
+        } else {
+            scrollTopBtn.classList.remove('show');
+        }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
 
 // Smooth Scrolling for Anchor Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -297,21 +331,23 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar Scroll Effect
-let lastScroll = 0;
+// Navbar Scroll Effect (only if navbar exists)
 const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+if (navbar) {
+    let lastScroll = 0;
     
-    if (currentScroll > 100) {
-        navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-    } else {
-        navbar.style.boxShadow = 'none';
-    }
-    
-    lastScroll = currentScroll;
-});
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
+            navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        } else {
+            navbar.style.boxShadow = 'none';
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
 
 // Animation on Scroll
 const observerOptions = {
@@ -335,65 +371,5 @@ document.querySelectorAll('.airline-card, .service-card, .route-item').forEach(e
 // Initialize
 console.log('FareHawker website initialized');
 
-// Axios setup for contact form (if present on page)
-if (typeof axios !== 'undefined') {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-        const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
-
-        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-        if (csrfToken) {
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-        }
-
-        const successAlert = document.getElementById('contactSuccess');
-        const errorAlert = document.getElementById('contactError');
-
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            if (successAlert) {
-                successAlert.classList.add('d-none');
-            }
-            if (errorAlert) {
-                errorAlert.classList.add('d-none');
-                errorAlert.innerHTML = '';
-            }
-
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData.entries());
-
-            axios.post(contactForm.getAttribute('action') || '/contact', data)
-                .then(function (response) {
-                    if (successAlert) {
-                        successAlert.textContent = response.data.message || 'Thank you for contacting us! We will get back to you soon.';
-                        successAlert.classList.remove('d-none');
-                    } else {
-                        alert(response.data.message || 'Thank you for contacting us! We will get back to you soon.');
-                    }
-                    contactForm.reset();
-                })
-                .catch(function (error) {
-                    let message = 'Something went wrong. Please try again later.';
-                    if (error.response && error.response.status === 422 && error.response.data.errors) {
-                        const errors = error.response.data.errors;
-                        message = '';
-                        Object.keys(errors).forEach(function (field) {
-                            errors[field].forEach(function (err) {
-                                message += `<div>${err}</div>`;
-                            });
-                        });
-                    }
-
-                    if (errorAlert) {
-                        errorAlert.innerHTML = message;
-                        errorAlert.classList.remove('d-none');
-                    } else {
-                        alert(message.replace(/<[^>]*>?/gm, ''));
-                    }
-                });
-        });
-    }
-}
+// Contact form is now handled by resources/js/contact.js via Vite
 

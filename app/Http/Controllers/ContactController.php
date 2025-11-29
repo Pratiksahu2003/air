@@ -32,7 +32,7 @@ class ContactController extends Controller
 
         if ($recentCount >= 2) {
             return response()->json([
-                'message' => 'You have reached the limit of 2 contact requests in 24 hours from this IP address. Please try again later.',
+                'message' => 'You have reached the limit of 2 contact requests in 24 hours . Please try again later.',
             ], 429);
         }
 
