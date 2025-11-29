@@ -28,7 +28,7 @@
                 </li>
                 @if(Auth::user()->isAdmin())
                 <li>
-                    <a href="#" class="">
+                    <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
                         <span>Users</span>
                     </a>
