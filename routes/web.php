@@ -28,5 +28,6 @@ Route::get('/payment-options', [HomeController::class, 'paymentOptions'])->name(
 Route::get('/finance-payment', [HomeController::class, 'financePayment'])->name('finance-payment');
 Route::get('/airlines', [HomeController::class, 'airlines'])->name('airlines');
 Route::get('/airports', [HomeController::class, 'airports'])->name('airports');
+Route::get('/api/airports', [HomeController::class, 'getAirports'])->name('api.airports');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 

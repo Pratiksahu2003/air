@@ -1,36 +1,26 @@
-// Airport Data
-const airports = [
-    { code: 'DEL', name: 'Delhi', country: 'India', full: 'Delhi, India (DEL)' },
-    { code: 'BOM', name: 'Mumbai', country: 'India', full: 'Mumbai, India (BOM)' },
-    { code: 'BLR', name: 'Bangalore', country: 'India', full: 'Bangalore, India (BLR)' },
-    { code: 'GOI', name: 'Goa', country: 'India', full: 'Goa, India (GOI)' },
-    { code: 'MAA', name: 'Chennai', country: 'India', full: 'Chennai, India (MAA)' },
-    { code: 'CCU', name: 'Kolkata', country: 'India', full: 'Kolkata, India (CCU)' },
-    { code: 'HYD', name: 'Hyderabad', country: 'India', full: 'Hyderabad, India (HYD)' },
-    { code: 'PNQ', name: 'Pune', country: 'India', full: 'Pune, India (PNQ)' },
-    { code: 'AMD', name: 'Ahmedabad', country: 'India', full: 'Ahmedabad, India (AMD)' },
-    { code: 'COK', name: 'Kochi', country: 'India', full: 'Kochi, India (COK)' },
-    { code: 'JAI', name: 'Jaipur', country: 'India', full: 'Jaipur, India (JAI)' },
-    { code: 'LKO', name: 'Lucknow', country: 'India', full: 'Lucknow, India (LKO)' },
-    { code: 'IXC', name: 'Chandigarh', country: 'India', full: 'Chandigarh, India (IXC)' },
-    { code: 'GAU', name: 'Guwahati', country: 'India', full: 'Guwahati, India (GAU)' },
-    { code: 'TRV', name: 'Trivandrum', country: 'India', full: 'Trivandrum, India (TRV)' },
-    { code: 'DXB', name: 'Dubai', country: 'UAE', full: 'Dubai, United Arab Emirates (DXB)' },
-    { code: 'AUH', name: 'Abu Dhabi', country: 'UAE', full: 'Abu Dhabi, United Arab Emirates (AUH)' },
-    { code: 'SIN', name: 'Singapore', country: 'Singapore', full: 'Singapore (SIN)' },
-    { code: 'BKK', name: 'Bangkok', country: 'Thailand', full: 'Bangkok, Thailand (BKK)' },
-    { code: 'KUL', name: 'Kuala Lumpur', country: 'Malaysia', full: 'Kuala Lumpur, Malaysia (KUL)' },
-    { code: 'LHR', name: 'London', country: 'UK', full: 'London, United Kingdom (LHR)' },
-    { code: 'JFK', name: 'New York', country: 'USA', full: 'New York, United States (JFK)' },
-    { code: 'LAX', name: 'Los Angeles', country: 'USA', full: 'Los Angeles, United States (LAX)' },
-    { code: 'CDG', name: 'Paris', country: 'France', full: 'Paris, France (CDG)' },
-    { code: 'FRA', name: 'Frankfurt', country: 'Germany', full: 'Frankfurt, Germany (FRA)' },
-    { code: 'SYD', name: 'Sydney', country: 'Australia', full: 'Sydney, Australia (SYD)' },
-    { code: 'NRT', name: 'Tokyo', country: 'Japan', full: 'Tokyo, Japan (NRT)' },
-    { code: 'HKG', name: 'Hong Kong', country: 'Hong Kong', full: 'Hong Kong (HKG)' },
-    { code: 'DOH', name: 'Doha', country: 'Qatar', full: 'Doha, Qatar (DOH)' },
-    { code: 'KWI', name: 'Kuwait', country: 'Kuwait', full: 'Kuwait (KWI)' }
-];
+// Airport Data - Loaded dynamically from database
+let airports = [];
+
+// Fetch airports from API
+async function loadAirports() {
+    try {
+        const response = await fetch('/api/airports');
+        if (response.ok) {
+            airports = await response.json();
+            console.log('Airports loaded:', airports.length);
+        } else {
+            console.error('Failed to load airports');
+            // Fallback to empty array if API fails
+            airports = [];
+        }
+    } catch (error) {
+        console.error('Error loading airports:', error);
+        airports = [];
+    }
+}
+
+// Load airports when page loads
+loadAirports();
 
 // DOM Elements
 const fromCityInput = document.getElementById('fromCity');
@@ -91,10 +81,19 @@ function showSuggestions(input, suggestionsContainer) {
         return;
     }
     
+    // Wait for airports to load if not yet loaded
+    if (airports.length === 0) {
+        // Show loading message or wait
+        suggestionsContainer.innerHTML = '<div class="suggestion-item">Loading airports...</div>';
+        suggestionsContainer.classList.add('show');
+        return;
+    }
+    
     const filtered = airports.filter(airport => 
         airport.name.toLowerCase().includes(value) ||
         airport.code.toLowerCase().includes(value) ||
         airport.country.toLowerCase().includes(value) ||
+        airport.city.toLowerCase().includes(value) ||
         airport.full.toLowerCase().includes(value)
     ).slice(0, 10);
     

@@ -26,7 +26,7 @@
                     <div class="input-group position-relative">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         <input type="text" class="form-control" id="fromCity" placeholder="Delhi, India (DEL)"
-                            value="Delhi, India (DEL)" autocomplete="off">
+                            value="" autocomplete="off">
                         <div class="airport-suggestions" id="fromSuggestions"></div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="input-group position-relative">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         <input type="text" class="form-control" id="toCity" placeholder="Mumbai, India (BOM)"
-                            value="Mumbai, India (BOM)" autocomplete="off">
+                            value="" autocomplete="off">
                         <div class="airport-suggestions" id="toSuggestions"></div>
                     </div>
                     <button type="button" class="btn-swap-cities" id="swapCities" title="Swap cities">

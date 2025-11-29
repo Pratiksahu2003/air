@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Airpot;
 
 class HomeController extends Controller
 {
@@ -124,6 +125,29 @@ class HomeController extends Controller
     public function blog()
     {
         return view('blog');
+    }
+
+    /**
+     * Get airports data as JSON for API
+     */
+    public function getAirports()
+    {
+        $airports = Airpot::select('name', 'code', 'country', 'city')
+            ->orderBy('name')
+            ->get()
+            ->map(function ($airport) {
+                // Format: "City, Country (CODE)"
+                $full = $airport->city . ', ' . $airport->country . ' (' . $airport->code . ')';
+                return [
+                    'code' => $airport->code,
+                    'name' => $airport->name,
+                    'country' => $airport->country,
+                    'city' => $airport->city,
+                    'full' => $full
+                ];
+            });
+
+        return response()->json($airports);
     }
 }
 
